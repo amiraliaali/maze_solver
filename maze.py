@@ -27,8 +27,8 @@ maze_map_1 = np.array([
 maze_map_2 = np.array([
     [-2, 0, 0, 0, 1],
     [1, 1, 1, 0, 1],
-    [0, 0, 0, 0, 1],
-    [0, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
     [0, 0, 0, 0, 2],
 ])
 
@@ -59,7 +59,7 @@ class Maze:
         self.policy_probs = np.full((*self.maze_map.shape, 4), 0.25)
 
     def state_values_init(self):
-        self.state_values = np.full(self.maze_map.shape, 0)
+        self.state_values = np.full(self.maze_map.shape, 0.) # had to be initially filled with float numbers, otherwise later it would only get updated with integers
 
     def next_step(self, state, action):
         """
@@ -70,6 +70,7 @@ class Maze:
         action_result = actions_mapping[str(action)]
         next_state_x = max(min(self.maze_map.shape[1]-1, action_result[0] + state[0]), 0)
         next_state_y = max(min(self.maze_map.shape[0]-1, action_result[1] + state[1]), 0)
+        # if the next action yields to a wall, it stays where it is
         if not self.maze_map[next_state_x, next_state_y] == 1:
             next_state = (next_state_x, next_state_y)
         return next_state, self.reward_map[state], self.maze_map[state] == 2
@@ -81,7 +82,7 @@ class Maze:
         best_action = np.random.choice(best_possible_actions)
         return best_action
     
-    def value_iteration(self, theta = 1, gamma=0.99):
+    def value_iteration(self, theta = 1e-6, gamma=0.99):
         delta = float("inf")
 
         while delta > theta:
@@ -147,7 +148,7 @@ class Maze:
 
     def render(self, frame, reached_end):
         cv.imshow("frame", frame)
-        cv.waitKey(500)
+        cv.waitKey(50)
         if reached_end:
             cv.waitKey(0)
         cv.destroyAllWindows()
@@ -178,7 +179,7 @@ class Maze:
         
 
 maze = Maze()
-maze.generate_maze(maze_map_2, 1500, 1500)
+maze.generate_maze(maze_map_1, 1500, 1500)
 
 
 
