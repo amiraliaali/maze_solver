@@ -9,8 +9,10 @@ actions_mapping = {
     "3": (0, -1),
 }
 
+
 def override(method):
     return method
+
 
 class Maze:
     def __init__(self) -> None:
@@ -31,7 +33,6 @@ class Maze:
 
     def policy_init(self):
         self.policy_probs = np.full((*self.maze_map.shape, 4), 0.25)
-
 
     def next_step(self, state, action):
         """
@@ -191,13 +192,14 @@ class Maze:
             self.empty_maze_frame, self.maze_map, self.frame_dim, self.cell_size
         )
         self.draw_walls_and_goal(self.empty_maze_frame, self.maze_map, self.cell_size)
-    
+
     def run_maze(self, maze_map, draw_the_path, frame_width=500, frame_height=500):
         self.draw_path = draw_the_path
         self.generate_maze(maze_map, frame_width, frame_height)
         self.reward_map_init()
         self.policy_init()
         self.test_agent((0, 0))
+
 
 if __name__ == "__main__":
     maze = Maze()

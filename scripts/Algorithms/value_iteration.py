@@ -2,12 +2,13 @@ from maze import Maze, override
 from maps import maze_map_1
 import numpy as np
 
+
 class MazeValueIteration(Maze):
     def state_values_init(self):
         self.state_values = np.full(
             self.maze_map.shape, 0.0
         )  # had to be initially filled with float numbers, otherwise later it would only get updated with integers
-    
+
     def value_iteration(self, theta=1e-6, gamma=0.99):
         delta = float("inf")
 
@@ -46,6 +47,7 @@ class MazeValueIteration(Maze):
         self.state_values_init()
         self.value_iteration()
         self.test_agent((0, 0))
+
 
 if __name__ == "__main__":
     maze = MazeValueIteration()
