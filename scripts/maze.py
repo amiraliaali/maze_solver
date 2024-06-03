@@ -21,8 +21,7 @@ class Maze:
         self.maze_map = None
         self.frame_dim = (0, 0)
         self.cell_size = 0
-        self.wall_colors = (100, 100, 100)
-        self.agent_color = (255, 50, 50)
+        self.wall_colors = (255, 255, 255)
         self.policy_probs = None
         self.state_values = None
         self.reward_map = None
@@ -92,35 +91,33 @@ class Maze:
                 cell_size // 10,
             )
 
-    def draw_walls(self, frame, maze_map, cell_size):
+    def draw_figures(self, frame, maze_map, cell_size):
+        tree = cv.imread("figures/tree.jpeg", cv.IMREAD_UNCHANGED)
+        tree = cv.resize(tree, (cell_size, cell_size))
         for i in range(maze_map.shape[0]):
             for j in range(maze_map.shape[1]):
                 if maze_map[i, j] == 1:
-                    cv.rectangle(
-                        frame,
-                        (j * cell_size, i * cell_size),
-                        ((j + 1) * cell_size, (i + 1) * cell_size),
-                        self.wall_colors,
-                        -1,
-                    )
-
-    def draw_golden_chest_house(self, frame, cell_size, maze_map):
+                    top_left_x = j * cell_size
+                    bottom_right_x = top_left_x + cell_size
+                    top_left_y = i * cell_size
+                    bottom_right_y = top_left_y + cell_size
+                    frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = tree
         # draw the chest
+        coins = cv.imread("figures/coins.jpeg", cv.IMREAD_UNCHANGED)
+        coins = cv.resize(coins, (cell_size, cell_size))
         top_left_x = cell_size * (maze_map.shape[0] - 1)
         bottom_right_x = top_left_x + cell_size
         top_left_y = cell_size * (maze_map.shape[1] - 1)
         bottom_right_y = top_left_y + cell_size
-        golden_chest = cv.imread("figures/golden_chest.png", cv.IMREAD_UNCHANGED)
-        golden_chest = cv.resize(golden_chest, (cell_size, cell_size))
-        frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = golden_chest
+        frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = coins
 
         # draw the house
+        house = cv.imread("figures/start.jpeg", cv.IMREAD_UNCHANGED)
+        house = cv.resize(house, (cell_size, cell_size))
         top_left_x = 0
         bottom_right_x = top_left_x + cell_size
         top_left_y = 0
         bottom_right_y = top_left_y + cell_size
-        house = cv.imread("figures/house.png", cv.IMREAD_UNCHANGED)
-        house = cv.resize(house, (cell_size, cell_size))
         frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = house
 
     def draw_agent(self, frame, cell_size, state=(0, 0)):
@@ -166,10 +163,7 @@ class Maze:
         self.draw_grid(
             self.empty_maze_frame, self.maze_map, self.frame_dim, self.cell_size
         )
-        self.draw_walls(self.empty_maze_frame, self.maze_map, self.cell_size)
-        self.draw_golden_chest_house(
-            self.empty_maze_frame, self.cell_size, self.maze_map
-        )
+        self.draw_figures(self.empty_maze_frame, self.maze_map, self.cell_size)
 
     def run_maze(self, maze_map, draw_the_path, frame_width=500, frame_height=500):
         self.draw_path = draw_the_path
