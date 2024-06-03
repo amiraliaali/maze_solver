@@ -1,6 +1,6 @@
 import numpy as np
 import cv2 as cv
-from maps import maze_map_1
+from maps import maze_map_1, maze_map_2, maze_map_3
 
 actions_mapping = {
     "0": (-1, 0),
@@ -122,9 +122,15 @@ class Maze:
     def draw_agent(self, frame, cell_size, state=(0, 0)):
         if not self.draw_path:
             frame = np.copy(self.empty_maze_frame)
-        centre_x = cell_size * state[1] + cell_size // 2
-        centre_y = cell_size * state[0] + cell_size // 2
-        cv.circle(frame, (centre_x, centre_y), cell_size // 3, self.agent_color, -1)
+        agent = cv.imread("agent.png", cv.IMREAD_UNCHANGED)
+        agent = cv.resize(agent, (cell_size, cell_size))
+
+        top_left_x = cell_size * state[1]
+        bottom_right_x = top_left_x + cell_size
+        top_left_y = cell_size * state[0]
+        bottom_right_y = top_left_y + cell_size
+
+        frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = agent
         return frame
 
     def render(self, frame, reached_end):
