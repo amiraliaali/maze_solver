@@ -55,7 +55,7 @@ class Maze:
         # if the next action yields to a wall, it stays where it is
         if not self.maze_map[next_state_x, next_state_y] == 1:
             next_state = (next_state_x, next_state_y)
-        return next_state, self.reward_map[state], self.maze_map[state] == 2
+        return next_state, self.reward_map[state], self.maze_map[next_state] == 2
 
     def next_action(self, state):
         possible_actions = self.policy(state)
@@ -71,7 +71,8 @@ class Maze:
         while not end:
             action = self.next_action(next_state)
             next_state, reward, end = self.next_step(next_state, action)
-            frame = self.draw_agent(self.frame_copy, self.cell_size, next_state)
+            if not end:
+                frame = self.draw_agent(self.frame_copy, self.cell_size, next_state)
             self.render(frame, end)
 
     def draw_grid(self, frame, maze_map, frame_dim, cell_size):
@@ -91,7 +92,7 @@ class Maze:
                 cell_size // 10,
             )
 
-    def draw_walls_and_goal(self, frame, maze_map, cell_size):
+    def draw_walls(self, frame, maze_map, cell_size):
         for i in range(maze_map.shape[0]):
             for j in range(maze_map.shape[1]):
                 if maze_map[i, j] == 1:
@@ -102,27 +103,30 @@ class Maze:
                         self.wall_colors,
                         -1,
                     )
-                elif maze_map[i, j] == 2:
-                    cv.rectangle(
-                        frame,
-                        (j * cell_size, i * cell_size),
-                        ((j + 1) * cell_size, (i + 1) * cell_size),
-                        (50, 50, 255),
-                        -1,
-                    )
-                elif maze_map[i, j] == -2:
-                    cv.rectangle(
-                        frame,
-                        (j * cell_size, i * cell_size),
-                        ((j + 1) * cell_size, (i + 1) * cell_size),
-                        (50, 255, 50),
-                        -1,
-                    )
+
+    def draw_golden_chest_house(self, frame, cell_size, maze_map):
+        # draw the chest
+        top_left_x = cell_size * (maze_map.shape[0] - 1)
+        bottom_right_x = top_left_x + cell_size
+        top_left_y = cell_size * (maze_map.shape[1] - 1)
+        bottom_right_y = top_left_y + cell_size
+        golden_chest = cv.imread("figures/golden_chest.png", cv.IMREAD_UNCHANGED)
+        golden_chest = cv.resize(golden_chest, (cell_size, cell_size))
+        frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = golden_chest
+
+        # draw the house
+        top_left_x = 0
+        bottom_right_x = top_left_x + cell_size
+        top_left_y = 0
+        bottom_right_y = top_left_y + cell_size
+        house = cv.imread("figures/house.png", cv.IMREAD_UNCHANGED)
+        house = cv.resize(house, (cell_size, cell_size))
+        frame[top_left_y:bottom_right_y, top_left_x:bottom_right_x] = house
 
     def draw_agent(self, frame, cell_size, state=(0, 0)):
         if not self.draw_path:
             frame = np.copy(self.empty_maze_frame)
-        agent = cv.imread("agent.png", cv.IMREAD_UNCHANGED)
+        agent = cv.imread("figures/agent.png", cv.IMREAD_UNCHANGED)
         agent = cv.resize(agent, (cell_size, cell_size))
 
         top_left_x = cell_size * state[1]
@@ -162,7 +166,10 @@ class Maze:
         self.draw_grid(
             self.empty_maze_frame, self.maze_map, self.frame_dim, self.cell_size
         )
-        self.draw_walls_and_goal(self.empty_maze_frame, self.maze_map, self.cell_size)
+        self.draw_walls(self.empty_maze_frame, self.maze_map, self.cell_size)
+        self.draw_golden_chest_house(
+            self.empty_maze_frame, self.cell_size, self.maze_map
+        )
 
     def run_maze(self, maze_map, draw_the_path, frame_width=500, frame_height=500):
         self.draw_path = draw_the_path

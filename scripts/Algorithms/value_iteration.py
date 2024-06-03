@@ -1,5 +1,5 @@
 from maze import Maze, override
-from maps import maze_map_1
+from maps import maze_map_2
 import numpy as np
 
 
@@ -46,4 +46,4 @@ class MazeValueIteration(Maze):
 
 if __name__ == "__main__":
     maze = MazeValueIteration()
-    maze.run_maze(maze_map_1, True, 1500, 1500)
+    maze.run_maze(maze_map_2, True, 1500, 1500)
