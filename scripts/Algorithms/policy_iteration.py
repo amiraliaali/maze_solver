@@ -1,9 +1,12 @@
 from maze import Maze, override
-from maps import maze_map_1
+from maps import maze_map_2
 import numpy as np
 
 
-class MazeValueIteration(Maze):
+class MazePolicyIteration(Maze):
+    def __init__(self, frame_width=500, frame_height=500) -> None:
+        super().__init__(frame_width, frame_height)
+
     def policy_evaluation(self, policy_probs, state_values, theta=1e-6, gamma=0.99):
         delta = float("inf")
 
@@ -62,16 +65,17 @@ class MazeValueIteration(Maze):
             )
 
     @override
-    def run_maze(self, maze_map, draw_the_path, frame_width=500, frame_height=500):
+    def run_maze(self, maze_map, draw_the_path, output_filename):
         self.draw_path = draw_the_path
-        self.generate_maze(maze_map, frame_width, frame_height)
+        self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.policy_init()
         self.state_values_init()
         self.policy_iteration()
         self.test_agent((0, 0))
+        self.create_video_from_frames(self.all_frames, output_filename)
 
 
 if __name__ == "__main__":
-    maze = MazeValueIteration()
-    maze.run_maze(maze_map_1, True, 1500, 1500)
+    maze = MazePolicyIteration(1500, 1500)
+    maze.run_maze(maze_map_2, True, 'output_video.mp4')

@@ -15,17 +15,18 @@ def override(method):
 
 
 class Maze:
-    def __init__(self) -> None:
+    def __init__(self, frame_width=500, frame_height=500) -> None:
         self.empty_maze_frame = None
         self.frame_copy = self.empty_maze_frame
         self.maze_map = None
-        self.frame_dim = (0, 0)
+        self.frame_dim = (frame_width, frame_height)
         self.cell_size = 0
         self.wall_colors = (255, 255, 255)
         self.policy_probs = None
         self.state_values = None
         self.reward_map = None
         self.draw_path = False
+        self.all_frames = []
 
     def policy(self, state):
         return self.policy_probs[state]
@@ -64,15 +65,18 @@ class Maze:
         return best_action
 
     def test_agent(self, state):
-        self.frame_copy = np.copy(self.empty_maze_frame)
         next_state = state
         end = False
         while not end:
+            frame_copy = np.copy(
+                self.empty_maze_frame
+            )  # Create a new copy for each iteration
             action = self.next_action(next_state)
             next_state, reward, end = self.next_step(next_state, action)
             if not end:
-                frame = self.draw_agent(self.frame_copy, self.cell_size, next_state)
-            self.render(frame, end)
+                frame = self.draw_agent(frame_copy, self.cell_size, next_state)
+            self.render(frame, end)  # Render the frame_copy
+            self.all_frames.append(frame)
 
     def draw_grid(self, frame, maze_map, frame_dim, cell_size):
         for i in range(0, maze_map.shape[0] + 1):
@@ -123,7 +127,7 @@ class Maze:
     def draw_agent(self, frame, cell_size, state=(0, 0)):
         if not self.draw_path:
             frame = np.copy(self.empty_maze_frame)
-        agent = cv.imread("figures/agent.png", cv.IMREAD_UNCHANGED)
+        agent = cv.imread("figures/agent.jpeg", cv.IMREAD_UNCHANGED)
         agent = cv.resize(agent, (cell_size, cell_size))
 
         top_left_x = cell_size * state[1]
@@ -165,14 +169,32 @@ class Maze:
         )
         self.draw_figures(self.empty_maze_frame, self.maze_map, self.cell_size)
 
-    def run_maze(self, maze_map, draw_the_path, frame_width=500, frame_height=500):
+    def create_video_from_frames(self, frames, output_filename, fps=5):
+        print("Generating the video...")
+        if not frames:
+            raise ValueError("The frames list is empty")
+
+        # Get frame size from the first frame
+        height, width, layers = frames[0].shape
+        size = (width, height)
+
+        fourcc = cv.VideoWriter_fourcc(*"mp4v")
+        out = cv.VideoWriter(output_filename, fourcc, fps, size)
+
+        for frame in frames:
+            out.write(frame)
+
+        out.release()
+
+    def run_maze(self, maze_map, draw_the_path, output_filename):
         self.draw_path = draw_the_path
-        self.generate_maze(maze_map, frame_width, frame_height)
+        self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.policy_init()
         self.test_agent((0, 0))
+        self.create_video_from_frames(self.all_frames, output_filename)
 
 
 if __name__ == "__main__":
-    maze = Maze()
-    maze.run_maze(maze_map_1, False, 1500, 1500)
+    maze = Maze(1500, 1500)
+    maze.run_maze(maze_map_1, False, "output_video.mp4")
