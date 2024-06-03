@@ -34,6 +34,11 @@ class Maze:
     def policy_init(self):
         self.policy_probs = np.full((*self.maze_map.shape, 4), 0.25)
 
+    def state_values_init(self):
+        self.state_values = np.full(
+            self.maze_map.shape, 0.0
+        )  # had to be initially filled with float numbers, otherwise later it would only get updated with integers
+
     def next_step(self, state, action):
         """
         Return:
@@ -58,46 +63,6 @@ class Maze:
         best_possible_actions = np.where(possible_actions == prob_best_action)[0]
         best_action = np.random.choice(best_possible_actions)
         return best_action
-
-    def policy_evaluation(self, gamma=0.99, theta=1e-6):
-        while True:
-            delta = 0
-            for row in range(self.maze_map.shape[0]):
-                for col in range(self.maze_map.shape[1]):
-                    v = self.state_values[(row, col)]
-                    new_value = 0
-                    for action in range(4):
-                        next_state, reward, _ = self.next_step((row, col), action)
-                        new_value += self.policy_probs[(row, col, action)] * (
-                            reward + gamma * self.state_values[next_state]
-                        )
-                    self.state_values[(row, col)] = new_value
-                    delta = max(delta, abs(v - new_value))
-            if delta < theta:
-                break
-
-    def policy_improvement(self, gamma=0.99):
-        policy_stable = True
-        for row in range(self.maze_map.shape[0]):
-            for col in range(self.maze_map.shape[1]):
-                old_action = np.argmax(self.policy_probs[(row, col)])
-                action_values = np.zeros(4)
-                for action in range(4):
-                    next_state, reward, _ = self.next_step((row, col), action)
-                    action_values[action] = (
-                        reward + gamma * self.state_values[next_state]
-                    )
-                best_action = np.argmax(action_values)
-                if old_action != best_action:
-                    policy_stable = False
-                self.policy_probs[(row, col)] = np.eye(4)[best_action]
-        return policy_stable
-
-    def policy_iteration(self, gamma=0.99, theta=0.5):
-        policy_stable = False
-        while not policy_stable:
-            self.policy_evaluation(gamma, theta)
-            policy_stable = self.policy_improvement(gamma)
 
     def test_agent(self, state):
         self.frame_copy = np.copy(self.empty_maze_frame)

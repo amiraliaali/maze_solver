@@ -22,5 +22,16 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "Python: Policy Iteration",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/policy_iteration.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
     ]
 }
