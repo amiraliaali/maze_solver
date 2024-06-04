@@ -73,8 +73,7 @@ class Maze:
             )  # Create a new copy for each iteration
             action = self.next_action(next_state)
             next_state, reward, end = self.next_step(next_state, action)
-            if not end:
-                frame = self.draw_agent(frame_copy, self.cell_size, next_state)
+            frame = self.draw_agent(frame_copy, self.cell_size, next_state)
             self.render(frame, end)  # Render the frame_copy
             self.all_frames.append(frame)
 
@@ -197,4 +196,4 @@ class Maze:
 
 if __name__ == "__main__":
     maze = Maze(1500, 1500)
-    maze.run_maze(maze_map_1, False, "output_video.mp4")
+    maze.run_maze(maze_map_2, False, "output_video.mp4")
