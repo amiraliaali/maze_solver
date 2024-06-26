@@ -41,15 +41,38 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Monte Carlo",
+            "name": "Python: Monte Carlo - On Policy",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/scripts/algorithms/monte_carlo.py",
+            "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/on_policy.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "Python: Monte Carlo - On Policy Constant Alpha",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/constant_alpha.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Monte Carlo - Off Policy",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/off_policy.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        
     ]
 }
