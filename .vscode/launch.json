@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: Original Maze",
             "type": "debugpy",
             "request": "launch",
@@ -27,6 +34,17 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/algorithms/policy_iteration.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Monte Carlo",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/monte_carlo.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },

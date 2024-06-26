@@ -28,6 +28,9 @@ class Maze:
         self.draw_path = False
         self.all_frames = []
 
+    def env_reset(self):
+        return (0,0)
+
     def policy(self, state):
         return self.policy_probs[state]
 
@@ -64,7 +67,7 @@ class Maze:
         best_action = np.random.choice(best_possible_actions)
         return best_action
 
-    def test_agent(self, state):
+    def test_agent(self, state = (0, 0)):
         next_state = state
         end = False
         while not end:
@@ -185,15 +188,15 @@ class Maze:
 
         out.release()
 
-    def run_maze(self, maze_map, draw_the_path, output_filename):
+    def run_maze(self, maze_map, draw_the_path, output_filename, starting_state):
         self.draw_path = draw_the_path
         self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.policy_init()
-        self.test_agent((0, 0))
+        self.test_agent(starting_state)
         self.create_video_from_frames(self.all_frames, output_filename)
 
 
 if __name__ == "__main__":
     maze = Maze(1500, 1500)
-    maze.run_maze(maze_map_2, False, "output_video.mp4")
+    maze.run_maze(maze_map_2, False, "output_video.mp4", (0,0))
