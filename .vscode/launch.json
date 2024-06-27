@@ -22,7 +22,7 @@
             "name": "Dynamic Programming - Value Iteration",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/scripts/algorithms/value_iteration.py",
+            "program": "${workspaceFolder}/scripts/algorithms/dynamic_programming/value_iteration.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },
@@ -33,7 +33,7 @@
             "name": "Dynamic Programming - Policy Iteration",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/scripts/algorithms/policy_iteration.py",
+            "program": "${workspaceFolder}/scripts/algorithms/dynamic_programming/policy_iteration.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },
@@ -78,6 +78,17 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/Algorithms/temporal_difference/sarsa.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Temporal Difference - Q-Learning",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/Algorithms/temporal_difference/q_learning.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },
