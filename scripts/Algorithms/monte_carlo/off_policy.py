@@ -13,7 +13,7 @@ class OffPolicyMonteCarlo(MazeMonteCarlo):
         return np.random.choice(np.flatnonzero(av == av.max()))
     
     def exploratory_policy(self, state, epsilon):
-        return self.policy(state, 0.)
+        return self.policy(state, epsilon)
         
     def off_policy_monte_carlo(self, action_values, episodes, gamma=0.99, epsilon=0.2):
         for episode in range(1, episodes+1):
@@ -25,20 +25,27 @@ class OffPolicyMonteCarlo(MazeMonteCarlo):
             transitions = []
 
             while not done:
-                action = self.target_policy(state)
+                action = self.exploratory_policy(state, epsilon)
                 next_state, reward, done = self.next_step(state, action)
                 transitions.append([state, action, reward])
                 state = next_state
 
             for state_t, action_t, reward_t in reversed(transitions):
-                G = reward_t + gamma*G
+                G = reward_t + gamma * G
                 csa[state_t][action_t] += W
                 qsa = action_values[state_t][action_t]
 
-                action_values[state_t][action_t] += (W / csa[state_t][action_t]) * (G - qsa)
+                if csa[state_t][action_t] == 0:
+                    continue  # Skip update to prevent division by zero
+
+                delta = (W / csa[state_t][action_t]) * (G - qsa)
+                if not np.isnan(delta):
+                    action_values[state_t][action_t] += delta
+
                 if action_t != self.target_policy(state_t):
-                    break
-                W = W * 1. / (1-epsilon + epsilon/4)
+                    continue  # Properly exit the loop if the action is not from the target policy
+
+                W = W * 1. / (1 - epsilon + epsilon / 4)
 
     @override
     def run_maze(self, maze_map, draw_the_path, output_filename):
@@ -46,7 +53,7 @@ class OffPolicyMonteCarlo(MazeMonteCarlo):
         self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.action_values = np.zeros((*self.maze_map.shape, 4))
-        self.off_policy_monte_carlo(self.action_values, episodes=2000)
+        self.off_policy_monte_carlo(self.action_values, episodes=5000)
         self.test_agent((0, 0))
         self.create_video_from_frames(self.all_frames, output_filename)
 

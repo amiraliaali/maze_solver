@@ -12,14 +12,14 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Python: Original Maze",
+            "name": "Original Maze",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/maze.py",
             "console": "integratedTerminal"
         },
         {
-            "name": "Python: Value Iteration",
+            "name": "Dynamic Programming - Value Iteration",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/algorithms/value_iteration.py",
@@ -30,7 +30,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Policy Iteration",
+            "name": "Dynamic Programming - Policy Iteration",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/algorithms/policy_iteration.py",
@@ -41,7 +41,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Monte Carlo - On Policy",
+            "name": "Monte Carlo - On Policy",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/on_policy.py",
@@ -52,7 +52,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Monte Carlo - On Policy Constant Alpha",
+            "name": "Monte Carlo - On Policy Constant Alpha",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/constant_alpha.py",
@@ -63,10 +63,21 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Monte Carlo - Off Policy",
+            "name": "Monte Carlo - Off Policy",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/scripts/Algorithms/monte_carlo/off_policy.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Temporal Difference - SARSA",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/Algorithms/temporal_difference/sarsa.py",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/scripts"
             },
