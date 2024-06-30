@@ -95,6 +95,17 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "N-Step Bootstrapping - SARSA",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/Algorithms/n_step_bootstrapping/n_step_sarsa.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
         
     ]
 }
