@@ -188,11 +188,14 @@ class Maze:
 
         out.release()
 
-    def run_maze(self, maze_map, draw_the_path, output_filename, starting_state):
+    def set_up_maze(self, maze_map, draw_the_path):
         self.draw_path = draw_the_path
         self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.policy_init()
+
+    def run_maze(self, maze_map, draw_the_path, output_filename, starting_state):
+        self.set_up_maze(maze_map, draw_the_path)
         self.test_agent(starting_state)
         self.create_video_from_frames(self.all_frames, output_filename)
 

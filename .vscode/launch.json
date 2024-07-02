@@ -106,6 +106,17 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "Deep SARSA",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/deep_learning_approaches/deep_SARSA.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
         
     ]
 }
