@@ -1,6 +1,6 @@
 from temporal_difference import MazeTemporalDifference
 import numpy as np
-from maps import maze_map_3
+from maps import maze_map_4
 from maze import override
 
 class MazeSarsa(MazeTemporalDifference):
@@ -28,11 +28,11 @@ class MazeSarsa(MazeTemporalDifference):
         self.generate_maze(maze_map, self.frame_dim[0], self.frame_dim[1])
         self.reward_map_init()
         self.action_values = np.zeros((*self.maze_map.shape, 4))
-        self.sarsa(self.action_values, episodes=10000)
+        self.sarsa(self.action_values, episodes=200)
         self.test_agent((0, 0))
         self.create_video_from_frames(self.all_frames, output_filename)
 
 
 if __name__ == "__main__":
     maze = MazeSarsa(1500, 1500)
-    maze.run_maze(maze_map_3, True, "output_video.mp4")
+    maze.run_maze(maze_map_4, True, "output_video.mp4")

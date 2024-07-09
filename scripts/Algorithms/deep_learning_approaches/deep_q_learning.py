@@ -4,14 +4,15 @@ import torch
 import torch.nn.functional as F
 from torch import nn as nn
 from torch.optim import AdamW
-from maps import maze_map_2
+from maps import maze_map_3
 from tqdm import tqdm
 
-class DeepSARSA(DeepMazeBaseClass):
+
+class DeepQLearning(DeepMazeBaseClass):
     def __init__(self, original_maze, state_dim, frame_width=500, frame_height=500) -> None:
         super().__init__(original_maze, state_dim, frame_width, frame_height)
     
-    def train_deep_sarsa(self, episodes, alpha=0.001, batch_size=32, gamma=0.99, epsilon=0.05):
+    def train_deep_q_learning(self, episodes, alpha=0.001, batch_size=32, gamma=0.99, epsilon=0.05):
         optim = AdamW(self.q_network.parameters(), lr=alpha)
         memory = ReplayMemory()
         stats = {"MSE Loss": [], "Returns": []}
@@ -29,10 +30,10 @@ class DeepSARSA(DeepMazeBaseClass):
                 if memory.can_sample(batch_size):
                     state_b, action_b, reward_b, done_b, next_state_b = memory.sample(batch_size)
 
-                    qsa_b = self.q_network(state_b).gather(1, action_b)
+                    qsa_b = self.q_network(state_b).gather(1, action_b) # takes the q value of the action which was taken
 
-                    next_action_b = self.policy(next_state_b, epsilon)
-                    next_qsa_b = self.target_q_network(next_state_b).gather(1, next_action_b)
+                    next_qsa_b = self.target_q_network(next_state_b)
+                    next_qsa_b = torch.max(next_qsa_b, dim=-1, keepdim=True)[0] # takes the q value of the optimal action
 
                     target_b = reward_b + ~done_b * gamma * next_qsa_b
 
@@ -62,7 +63,7 @@ class DeepSARSA(DeepMazeBaseClass):
 
 if __name__ == "__main__":
     maze = Maze()
-    maze.set_up_maze(maze_map_2, False)
-    maze = DeepSARSA(maze, 2)
-    maze.train_deep_sarsa(episodes=100)
-    maze.run_maze(maze_map_2, False, "output_video.mp4")
+    maze.set_up_maze(maze_map_3, False)
+    maze = DeepQLearning(maze, 2)
+    maze.train_deep_q_learning(episodes=200)
+    maze.run_maze(maze_map_3, False, "output_video.mp4")

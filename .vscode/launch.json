@@ -117,6 +117,39 @@
             "console": "integratedTerminal",
             "justMyCode": true
         },
+        {
+            "name": "Deep Q-Learning",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/deep_learning_approaches/deep_q_learning.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "REINFORCE",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/deep_learning_approaches/REINFORCE.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Advantage Actor Critic",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/algorithms/deep_learning_approaches/a2c.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/scripts"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
         
     ]
 }
