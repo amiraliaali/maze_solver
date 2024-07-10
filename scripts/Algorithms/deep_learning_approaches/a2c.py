@@ -116,7 +116,7 @@ class ParallelEnv(Maze):
 
             state_tensor = np.array(next_state)
             state_tensor = torch.from_numpy(state_tensor).unsqueeze(dim=0).float()
-            action = torch.argmax(self.policy(state_tensor)).item()
+            action = torch.argmax(self.actor(state_tensor)).item()
 
             next_state, reward, end = self.next_step(next_state, action)
             frame = self.draw_agent(frame_copy, self.cell_size, next_state)
@@ -135,6 +135,6 @@ for i in range(num_envs):
 
 parallel_envs = ParallelEnv(env_fns, 500, 500)
 
-parallel_envs.actor_critic(100)
+parallel_envs.actor_critic(10)
 parallel_envs.set_up_maze(maze_map_2, True)
 parallel_envs.test_agent((0,0))
