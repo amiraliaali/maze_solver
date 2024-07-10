@@ -4,8 +4,8 @@
 Here are the results of our work, showing an agent successfully finding the shortest path to the coins:
 
 <div style="display: flex; gap: 10px;">
-  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video.gif" width="300" height="300" />
-  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video_1.gif" width="300" height="300" />
+  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video.gif" width="400" height="400" />
+  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video_1.gif" width="400" height="400" />
 </div>
 
 ## Repository Overview
