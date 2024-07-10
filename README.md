@@ -1,0 +1,1 @@
+![Alt Text](https://github.com/amiraliaali/maze_solver/blob/main/output_video.gif)
