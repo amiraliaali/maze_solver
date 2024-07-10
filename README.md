@@ -3,8 +3,11 @@
 ## Test Output Gif
 Here is the result of the work, where an agent succesfully finds the shortest path to the Chest:
 
-<img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video.gif" width="300" height="300" />
-<img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video_1.gif" width="300" height="300" />
+
+<div style="display: flex; gap: 10px;">
+  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video.gif" width="200" height="200" />
+  <img src="https://github.com/amiraliaali/maze_solver/blob/main/output_videos/output_video_1.gif" width="500" height="500" />
+</div>
 
 
 ## Abstract of the Repository
