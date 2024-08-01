@@ -1,5 +1,5 @@
 from maze import Maze, override
-from maps import maze_map_2
+from maps import maze_map_1
 import numpy as np
 
 
@@ -12,6 +12,7 @@ class MazePolicyIteration(Maze):
 
         while delta > theta:
             delta = 0
+            new_state_values = np.copy(state_values)
 
             for row in range(state_values.shape[0]):
                 for col in range(state_values.shape[1]):
@@ -25,9 +26,10 @@ class MazePolicyIteration(Maze):
                             reward + gamma * state_values[next_state]
                         )
 
-                    state_values[(row, col)] = new_state_value
+                    new_state_values[(row, col)] = new_state_value
 
                     delta = max(delta, abs(new_state_value - old_state_value))
+            state_values[:] = new_state_values
 
     def policy_improvement(self, policy_probs, state_values, gamma=0.99):
         policy_stable = True
@@ -78,4 +80,4 @@ class MazePolicyIteration(Maze):
 
 if __name__ == "__main__":
     maze = MazePolicyIteration(1500, 1500)
-    maze.run_maze(maze_map_2, True, 'output_video.mp4')
+    maze.run_maze(maze_map_1, True, 'output_video.mp4')
